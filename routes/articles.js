@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const db = require('./db')
+
+var mongoose = require('mongoose')
+var Article = mongoose.model('Article')
 const fn = () => {}
 
 router.get('/api/getArticle', (req, res) => {
   const _id = req.query.id
-  db.Article.findOne({_id}, (err, doc) => {
+  Article.findOne({_id}, (err, doc) => {
     if (err) {
       console.log(err)
     } else if (doc) {
@@ -15,7 +17,7 @@ router.get('/api/getArticle', (req, res) => {
 })
 
 router.get('/api/getArticles', (req, res) => {
-  db.Article.find(null, 'title date content', (err, doc) => {
+  Article.find(null, 'title date content', (err, doc) => {
     if (err) {
       console.log(err)
     } else if (doc) {
@@ -33,7 +35,7 @@ router.post('/api/saveArticle', (req, res) => {
     content: req.body.content
   }
   if (id) {
-    db.Article.findByIdAndUpdate(id, article, fn)
+    Article.findByIdAndUpdate(id, article, fn)
   } else {
     new db.Article(article).save()
   }
@@ -41,18 +43,8 @@ router.post('/api/saveArticle', (req, res) => {
 })
 
 router.post('/api/deleteArticle', (req, res) => {
-  db.Article.findByIdAndRemove(req.body.id, fn)
+  Article.findByIdAndRemove(req.body.id, fn)
   res.status(200).end()
-})
-
-router.post('/api/getLinks', (req, res) => {
-  db.Link.find(null, (err, doc) => {
-    if (err) {
-      console.log(err)
-    } else if (doc) {
-      res.send(doc)
-    }
-  })
 })
 
 
