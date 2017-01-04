@@ -13,5 +13,6 @@ module.exports = function() {
 	})
 
 	require('../models/article');
+	require('../models/admin');
     return db;
 }
