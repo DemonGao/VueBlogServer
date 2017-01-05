@@ -27,8 +27,6 @@ router.get('/api/login', (req, res) => {
   })
 })
 
-
-
 router.get('/api/reg', (req, res) => {
   // const id = req.body._id
   let admin = new Admin({username:'admin1',password:'admin1'});
