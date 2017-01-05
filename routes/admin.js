@@ -18,18 +18,21 @@ router.get('/api/login', (req, res) => {
     	res.send({status:false,msg:'用户名不正确!'})
     	return ;
     }
-    if (doc.password==password){
-    	res.send({status:true})
-    }else{
-    	res.send({status:false,msg:'密码不正确!'})
+    if (doc.password!=password){
+      res.send({status:false,msg:'密码不正确!'})
+      return ;
     }
-    
+    const id = doc._id;
+    Admin.findOneAndUpdate({_id:id},{$set:{date:new Date()}},{upsert : true}, (err,admin)=>{
+      admin.password = ''
+      res.send({status:true,'admin':admin})
+    })
   })
 })
 
 router.get('/api/reg', (req, res) => {
   // const id = req.body._id
-  let admin = new Admin({username:'admin1',password:'admin1'});
+  var admin = new Admin({username:'admin1',password:'admin1'});
   // if (id) {
   //   Admin.findByIdAndUpdate(id, admin, fn)
   // } else {
