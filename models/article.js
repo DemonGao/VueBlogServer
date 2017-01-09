@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
-	/*
+	
 	//标题
 	title : {
 		type : String,
@@ -17,7 +17,7 @@ const ArticleSchema = new Schema({
 		trim : true,
 	},
 	//标签
-	tag : {
+	tag :{ 
 		type : String,
 		default : '',
 		trim : true,
@@ -27,10 +27,10 @@ const ArticleSchema = new Schema({
 		type : String,
 		default : '',
 	}
-	*/
-	title: String,
-  	date: Date,
-  	content: String
+	
+	// title: String,
+ //  	date: Date,
+ //  	content: String
 })
 
 mongoose.model('Article', ArticleSchema);

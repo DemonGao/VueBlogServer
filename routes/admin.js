@@ -33,7 +33,7 @@ router.get('/api/login', (req, res) => {
 
 router.get('/api/reg', (req, res) => {
   // const id = req.body._id
-  var admin = new Admin({username:'admin1',password:'admin1'});
+  var admin = new Admin({username:'admin',password:'admin'});
   // if (id) {
   //   Admin.findByIdAndUpdate(id, admin, fn)
   // } else {

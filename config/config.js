@@ -3,5 +3,5 @@
 // mongoose.connect(dbURL,dbOptions);
 module.exports = {
     // mongodb: 'mongodb://localhost:27017/blog'
-    mongodb: 'mongodb://DemonGao:gsc19941024@123.207.169.191:27017/blog'
+    mongodb: 'mongodb://demongao:demongao@123.207.169.191:11024/blog'
 }
