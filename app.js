@@ -11,6 +11,7 @@ var db = mongoose();
 
 var articles = require('./routes/articles');
 var admin = require('./routes/admin');
+var tag = require('./routes/tag');
 
 const app = express();
 app.use(logger('dev'));
@@ -49,5 +50,6 @@ app.all('*',function (req, res, next) {
 });
 app.use(articles);
 app.use(admin);
+app.use(tag);
 
 module.exports = app;

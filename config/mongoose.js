@@ -15,5 +15,6 @@ module.exports = function() {
 
 	require('../models/article');
 	require('../models/admin');
+	require('../models/tag');
     return db;
 }
