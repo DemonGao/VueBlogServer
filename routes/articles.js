@@ -17,18 +17,26 @@ router.get('/api/getArticle', (req, res) => {
 })
 
 router.get('/api/getArticles', (req, res) => {
-  Article.find({}, (err, doc) => {
-    if (err) {
-      console.log(err)
-      res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
-    } else if (doc) {
-      if(doc.length==0){
-        res.send({status:false,msg:'没有查到数据...'})
-        return ;
+  var opts = req.query;
+  console.log(opts);
+  var select = {};
+  if(opts.tag!="all"){
+    select = {tag:opts.tag}
+  }
+  Article
+    .find(select)
+    .exec((err, doc) => {
+      if (err) {
+        console.log(err)
+        res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
+      }else if (doc) {
+        if(doc.length==0){
+          res.send({status:false,msg:'没有查到数据...'})
+          return ;
+        }
+        res.send({status:true,data:doc})
       }
-      res.send({status:true,data:doc})
-    }
-  })
+    })
 })
 
 
