@@ -9,9 +9,9 @@ router.get('/api/getArticle', (req, res) => {
   const _id = req.query.id
   Article.findOne({_id}, (err, doc) => {
     if (err) {
-      console.log(err)
+      res.send({status:false,msg:'没有搜到此文章!'})
     } else if (doc) {
-      res.send(doc)
+      res.send({status:true,data:doc})
     }
   })
 })
