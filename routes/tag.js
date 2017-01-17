@@ -7,9 +7,8 @@ const fn = () => {}
 
 //获取全部标签
 router.get('/api/getTags', (req, res) => {
-  Tag
-    .find({})
-    .exec(err, doc) => {
+  Tag.find({})
+    .exec((err, doc) => {
       if (err) {
         console.log(err)
         res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
@@ -48,22 +47,22 @@ router.get('/api/getTags', (req, res) => {
 */
 
 //添加或修改标签
-router.get('/api/saveTag', (req, res) => {
-  const id = req.query._id;
+router.post('/api/saveTag', (req, res) => {
+  const id = req.body._id;
   const tag = {
-    tag : req.query.tag,
+    tag : req.body.tag,
     date : new Date()
   }
   if (id) {
-    Tag.findByIdAndUpdate(id, article, fn)
-    res.send({status:true,msg:'标签已更新!'})
+    Tag.findByIdAndUpdate(id, tag, fn)
+    res.send({status:true,msg:'标签: '+tag.tag+' 已更新!',tag:tag.tag})
   } else {
-    Tag.count({tag:req.query.tag}, function(err,count){
+    Tag.count({tag:req.body.tag}, function(err,count){
       if (count!=0) {
-        res.send({status:false,msg:'标签已存在!'})
+        res.send({status:false,msg:'标签: '+tag.tag+' 已存在!'})
       }else{
         new Tag(tag).save();
-        res.send({status:true,msg:'标签已添加!'})
+        res.send({status:true,msg:'标签: '+tag.tag+' 已添加!',tag:tag})
       }
     });
   }

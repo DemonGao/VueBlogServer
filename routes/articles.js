@@ -59,9 +59,23 @@ router.post('/api/saveArticle', (req, res) => {
   res.status(200).end()
 })
 
-router.post('/api/deleteArticle', (req, res) => {
-  Article.findByIdAndRemove(req.body._id, fn)
-  res.status(200).end()
+router.post('/api/delArticle', (req, res) => {
+  const _id = req.body._id;
+  Article.count({_id},(err,count)=>{
+    if(count!=0){
+      Article.remove({_id},(err,result)=>{
+        if(err){
+          console.log(err);
+          res.status(200).send({status:false,msg:'删除失败!'})
+        }else{
+          console.log('文章删除成功!');
+          res.status(200).send({status:true,msg:'文章已删除!'})
+        }
+      })
+    }else{
+       res.status(200).send({status:false,msg:'文章已被删除!'})
+    }
+  })
 })
 
 
