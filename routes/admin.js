@@ -31,13 +31,8 @@ router.get('/api/login', (req, res) => {
 })
 
 router.get('/api/reg', (req, res) => {
-  // const id = req.body._id
   var admin = new Admin({username:'admin',password:'admin'});
-  // if (id) {
-  //   Admin.findByIdAndUpdate(id, admin, fn)
-  // } else {
   admin.save()
-  // }
   res.status(200).end()
 })
 

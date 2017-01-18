@@ -42,13 +42,15 @@ router.get('/api/getArticles', (req, res) => {
 
 router.post('/api/saveArticle', (req, res) => {
   const id = req.body._id
-  console.log(req.body);
+  
   const article = {
     title: req.body.title,
-    date: req.body.date,
+    // date: req.body.date,
     content: req.body.content,
-    tag : req.body.tag
+    tag : req.body.tag,
+    markdown : req.body.markdown
   }
+  console.log(article);
   if (id) {
     Article.findByIdAndUpdate(id, article, fn)
     res.send({status:true,msg:'文章已更新!'})

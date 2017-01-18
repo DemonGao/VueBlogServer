@@ -26,6 +26,11 @@ const ArticleSchema = new Schema({
 	content : {
 		type : String,
 		default : '',
+	},
+	//mardown内容
+	markdown : {
+		type : String,
+		default : ''
 	}
 	
 	// title: String,
