@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//11ss
 // app.post('/api/setup', function (req, res) {
 //   new db.User(req.body)
 //     .save()

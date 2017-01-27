@@ -1,3 +1,5 @@
+const dbHelper = require('../config/dbHelper');
+
 const express = require('express')
 const router = express.Router()
 
@@ -16,28 +18,28 @@ router.get('/api/getArticle', (req, res) => {
   })
 })
 
-router.get('/api/getArticles', (req, res) => {
-  var opts = req.query;
-  console.log(opts);
-  var select = {};
-  if(opts.tag!="all"){
-    select = {tag:opts.tag}
-  }
-  Article
-    .find(select)
-    .exec((err, doc) => {
-      if (err) {
-        console.log(err)
-        res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
-      }else if (doc) {
-        if(doc.length==0){
-          res.send({status:false,msg:'没有查到数据...'})
-          return ;
-        }
-        res.send({status:true,data:doc})
-      }
-    })
-})
+// router.get('/api/getArticles', (req, res) => {
+//   var opts = req.query;
+//   console.log(opts);
+//   var select = {};
+//   if(opts.tag!="all"){
+//     select = {tag:opts.tag}
+//   }
+//   Article
+//     .find(select)
+//     .exec((err, doc) => {
+//       if (err) {
+//         console.log(err)
+//         res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
+//       }else if (doc) {
+//         if(doc.length==0){
+//           res.send({status:false,msg:'没有查到数据...'})
+//           return ;
+//         }
+//         res.send({status:true,data:doc})
+//       }
+//     })
+// })
 
 
 router.post('/api/saveArticle', (req, res) => {
@@ -81,6 +83,26 @@ router.post('/api/delArticle', (req, res) => {
   })
 })
 
-
+router.get('/api/getArticles', function(req, res, next){
+    var opts = req.query;
+    var select = {};
+    if(opts.tag!="all"){
+        select = {tag:opts.tag}
+    }
+    var page = req.query.page || 1;
+    dbHelper.pageQuery(page, 3, Article, '', select, {
+        date: 'desc'
+    }, function(error, $page){
+        if(error){
+            next(error);
+        }else{
+            if($page.results.length==0){
+              res.send({status:false,msg:'没有查到数据...'})
+              return ;
+            }
+            res.send({status:true,data:$page})
+        }
+    });
+})
 
 module.exports = router
