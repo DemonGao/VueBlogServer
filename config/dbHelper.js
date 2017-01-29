@@ -6,15 +6,16 @@ var Schema = mongoose.Schema;
 var async = require('async');
 /***
  *
- * @param 当前页数
- * @param 每页条数
+ * @param page 当前页数
+ * @param pageSize 每页条数
  * @param Model
- * @param 关联查询
- * @param 查询条件Object
- * @param 排序条件
+ * @param populate 关联查询
+ * @param queryParams 查询条件Object
+ * @param sortParams 排序条件
  * @param callback
  */
 var pageQuery = function (page, pageSize, Model, populate, queryParams, sortParams, callback) {
+    pageSize = parseInt(pageSize);
     var start = (page - 1) * pageSize;
     var $page = {
         pageNumber: page
@@ -39,8 +40,10 @@ var pageQuery = function (page, pageSize, Model, populate, queryParams, sortPara
                 });
         }
     }, function (err, results) {
+        console.log(results);
         var count = results.count;
-        $page.pageCount = (count - 1) / pageSize + 1;
+        $page.pageCount = Math.ceil(count / pageSize);   //共多少页
+        $page.total = count;                             //共多少条
         $page.results = results.records;
         callback(err, $page);
     });

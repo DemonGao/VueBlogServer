@@ -84,13 +84,14 @@ router.post('/api/delArticle', (req, res) => {
 })
 
 router.get('/api/getArticles', function(req, res, next){
-    var opts = req.query;
+    const opts = req.query;
     var select = {};
     if(opts.tag!="all"){
         select = {tag:opts.tag}
     }
-    var page = req.query.page || 1;
-    dbHelper.pageQuery(page, 3, Article, '', select, {
+    let page = opts.page || 1;
+    let pageSize = opts.pageSize || 2;
+    dbHelper.pageQuery(page, pageSize, Article, '', select, {
         date: 'desc'
     }, function(error, $page){
         if(error){
