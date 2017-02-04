@@ -45,7 +45,7 @@ router.get('/api/getArticles', function(req, res, next){
         }
     });
 })
-router.post('/api/viewArticleb', (req, res) => {
+router.post('/api/viewArticle', (req, res) => {
     const _id = req.body.id
     Article.update({_id},{'$inc':{'view':1}},(err,doc) =>{
         if (err) {
