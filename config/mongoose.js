@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const config = require('./config.js');
 
 module.exports = function() {
+	mongoose.Promise = global.Promise; //插入自己的 Promise 库
     const db = mongoose.connect(config.mongodb);
     
     const dbconnection = mongoose.connection

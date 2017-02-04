@@ -7,41 +7,66 @@ var mongoose = require('mongoose')
 var Article = mongoose.model('Article')
 const fn = () => {}
 
+/***
+ * 根据 id 获取文章
+ */
 router.get('/api/getArticle', (req, res) => {
-  const _id = req.query.id
-  Article.findOne({_id}, (err, doc) => {
-    if (err) {
-      res.send({status:false,msg:'没有搜到此文章!'})
-    } else if (doc) {
-      res.send({status:true,data:doc})
-    }
-  })
+    const _id = req.query.id
+    Article.findOne({_id}, (err, doc) => {
+        if (err) {
+            res.send({status:false,msg:'没有搜到此文章!'})
+        } else if (doc) {
+            res.send({status:true,data:doc})
+        }
+    })
 })
-
-// router.get('/api/getArticles', (req, res) => {
-//   var opts = req.query;
-//   console.log(opts);
-//   var select = {};
-//   if(opts.tag!="all"){
-//     select = {tag:opts.tag}
-//   }
-//   Article
-//     .find(select)
-//     .exec((err, doc) => {
-//       if (err) {
-//         console.log(err)
-//         res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
-//       }else if (doc) {
-//         if(doc.length==0){
-//           res.send({status:false,msg:'没有查到数据...'})
-//           return ;
-//         }
-//         res.send({status:true,data:doc})
-//       }
-//     })
-// })
-
-
+/***
+ * 分页获取文章
+ */
+router.get('/api/getArticles', function(req, res, next){
+    const opts = req.query;
+    var select = {};
+    if(opts.tag!="all"){
+        select = {tag:opts.tag}
+    }
+    let page = opts.page || 1;
+    let pageSize = opts.pageSize || 2;
+    dbHelper.pageQuery(page, pageSize, Article, '', select, {
+        date: 'desc'
+    }, function(error, $page){
+        if(error){
+            next(error);
+        }else{
+            if($page.results.length==0){
+                res.send({status:false,msg:'没有查到数据...'})
+                return ;
+            }
+            res.send({status:true,data:$page})
+        }
+    });
+})
+router.post('/api/viewArticleb', (req, res) => {
+    const _id = req.body.id
+    Article.update({_id},{'$inc':{'view':1}},(err,doc) =>{
+        if (err) {
+            res.send({status:false,msg:'您查看的文章不存在!'})
+        }else{
+            // res.status(200).end()
+            res.send({status:true})
+        }
+    });
+    // Article.findOne({_id}, (err, doc) => {
+    //     if (err) {
+    //         res.send({status:false,msg:'没有搜到此文章!'})
+    //     } else if (doc) {
+    //         // res.send({status:true,data:doc})
+    //         Article.update({_id},{'$inc':{'view':1}});
+    //     }
+    // })
+})
+/***
+ * 更新或发表文章
+ */
 router.post('/api/saveArticle', (req, res) => {
   const id = req.body._id
   
@@ -63,7 +88,9 @@ router.post('/api/saveArticle', (req, res) => {
   }
   res.status(200).end()
 })
-
+/***
+ * 删除文章
+ */
 router.post('/api/delArticle', (req, res) => {
   const _id = req.body._id;
   Article.count({_id},(err,count)=>{
@@ -83,27 +110,5 @@ router.post('/api/delArticle', (req, res) => {
   })
 })
 
-router.get('/api/getArticles', function(req, res, next){
-    const opts = req.query;
-    var select = {};
-    if(opts.tag!="all"){
-        select = {tag:opts.tag}
-    }
-    let page = opts.page || 1;
-    let pageSize = opts.pageSize || 2;
-    dbHelper.pageQuery(page, pageSize, Article, '', select, {
-        date: 'desc'
-    }, function(error, $page){
-        if(error){
-            next(error);
-        }else{
-            if($page.results.length==0){
-              res.send({status:false,msg:'没有查到数据...'})
-              return ;
-            }
-            res.send({status:true,data:$page})
-        }
-    });
-})
 
 module.exports = router

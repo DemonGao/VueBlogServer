@@ -31,6 +31,10 @@ const ArticleSchema = new Schema({
 	markdown : {
 		type : String,
 		default : ''
+	},
+	view : {
+		type : Number,
+		default : 0
 	}
 	
 	// title: String,
