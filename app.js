@@ -12,6 +12,8 @@ var db = mongoose();
 var articles = require('./routes/articles');
 var admin = require('./routes/admin');
 var tag = require('./routes/tag');
+const upload = require('./routes/upload')
+
 
 const app = express();
 app.use(logger('dev'));
@@ -51,5 +53,6 @@ app.all('*',function (req, res, next) {
 app.use(articles);
 app.use(admin);
 app.use(tag);
+app.use(upload);
 
 module.exports = app;
