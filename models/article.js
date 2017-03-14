@@ -16,6 +16,12 @@ const ArticleSchema = new Schema({
 		default : new Date(),
 		trim : true,
 	},
+	//发布日期
+	edit_date : {
+		type : Date,
+		default : new Date(),
+		trim : true,
+	},
 	//标签
 	tag :{ 
 		type : String,

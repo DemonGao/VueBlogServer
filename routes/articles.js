@@ -76,7 +76,7 @@ router.post('/api/saveArticle', (req, res) => {
     content: req.body.content,
     tag : req.body.tag,
     markdown : req.body.markdown,
-    date : new Date()
+      edit_date : new Date()
   }
   console.log(article);
   if (id) {
