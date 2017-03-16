@@ -40,7 +40,7 @@ var pageQuery = function (page, pageSize, Model, populate, queryParams, sortPara
                 });
         }
     }, function (err, results) {
-        console.log(results);
+        // console.log(results);
         var count = results.count;
         $page.pageCount = Math.ceil(count / pageSize);   //共多少页
         $page.total = count;                             //共多少条

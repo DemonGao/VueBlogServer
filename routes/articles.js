@@ -109,6 +109,33 @@ router.post('/api/delArticle', (req, res) => {
     }
   })
 })
+//模糊查询文章
+router.get('/api/getArticlesByTitle', function(req, res, next){
+    const title = req.query.title;
+    // console.log(title);
+    Article.find({})
+        .where("title",{$regex: title, $options:'i'})
+        .exec((err, doc) => {
+            if (err) {
+                console.log(err)
+                res.send({status:false,msg:'服务器和您开了个小小的玩笑!'})
+            } else if (doc) {
+                if(doc.length==0){
+                    res.send({status:false,msg:'没有查到数据...',data:doc})
+                    return ;
+                }
+                res.send({status:true,data:doc})
+            }
+        })
 
+
+
+})
+
+// if($page.results.length==0){
+//     res.send({status:false,msg:'没有查到数据...'})
+//     return ;
+// }
+// res.send({status:true,data:$page})
 
 module.exports = router
