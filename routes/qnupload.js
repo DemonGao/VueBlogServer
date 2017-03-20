@@ -46,4 +46,64 @@ router.post('/profile', function(req, res, next) {
     });
 })
 
+
+
+router.post('/photos', function(req, res, next) {
+    // 七牛相关配置信息
+    let client = qn.create(config);
+    // 上传单个文件
+    // 这里`image`对应前端form中input的name值
+    upload.array('avatar',12)(req, res, function(err) {
+        if (err) {
+            return console.error(err);
+        }
+
+
+        if(req.files.length!=0){
+            var result = {
+                statu:1,
+                filelength:req.files.length,
+                files:[],
+                fail:[]
+            }
+            for(let i=0;i<req.files.length;i++){
+                let file = req.files[i];
+                if (file && file.buffer) {
+                    // 上传到七牛
+
+                    let fileFormat = (file.originalname).split(".");
+                    // cb(null, file.fieldname + '-' + Date.now() + "." + fileFormat[fileFormat.length - 1]);
+
+                    let filePath = '/upload/photos/' + file.fieldname + '-' +Date.now() + '.' +fileFormat[fileFormat.length - 1];
+                    result.files.push({
+                        'filename':filePath
+                    })
+                    client.upload(file.buffer, {
+                        key: filePath
+                    }, function(err) {
+                        if (err) {
+                            result.fail.push({
+                                'filename':file.originalname,
+                                'err':err
+                            })
+
+                        }else{
+                            // console.log(filePath);
+                            // console.log(result.files);
+                        }
+                    });
+                }
+            }
+            res.status(200).send(result)
+        }else{
+            res.status(200).send({
+                statu:0,
+                msg:'没有传入图片'
+            })
+        }
+
+
+    });
+})
+
 module.exports = router;
