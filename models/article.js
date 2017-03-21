@@ -13,10 +13,10 @@ const ArticleSchema = new Schema({
 	//发布日期
 	date : {
 		type : Date,
-		default : new Date(),
+		// default : new Date(),
 		trim : true,
 	},
-	//发布日期
+	//修改日期
 	edit_date : {
 		type : Date,
 		default : new Date(),

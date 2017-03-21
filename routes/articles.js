@@ -68,23 +68,23 @@ router.post('/api/viewArticle', (req, res) => {
  * 更新或发表文章
  */
 router.post('/api/saveArticle', (req, res) => {
-  const id = req.body._id
-  
-  const article = {
-      title: req.body.title,
-      content: req.body.content,
-      tag : req.body.tag,
-      markdown : req.body.markdown,
-      edit_date : new Date()
-  }
-  if (id) {
-    Article.findByIdAndUpdate(id, article, fn)
-    res.send({status:true,msg:'文章已更新!'})
-  } else {
-    new Article(article).save()
-    res.send({status:true,msg:'文章已发表!'})
-  }
-  res.status(200).end()
+    const id = req.body._id
+    let article = {
+        title: req.body.title,
+        content: req.body.content,
+        tag : req.body.tag,
+        markdown : req.body.markdown,
+        edit_date : new Date()
+    }
+    if (id) {
+        Article.findByIdAndUpdate(id, article, fn)
+        res.send({status:true,msg:'文章已更新!'})
+    } else {
+        article.date = new Date()
+        new Article(article).save()
+        res.send({status:true,msg:'文章已发表!'})
+    }
+    res.status(200).end()
 })
 /***
  * 删除文章
